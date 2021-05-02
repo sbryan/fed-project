@@ -10,7 +10,7 @@ It makes use of the [`next-pwa`](https://github.com/shadowwalker/next-pwa) modul
 
 Start by cloning the project locally:
 ```bash
-git clone fed-project <url to this repo>
+git clone fed-project https://github.com/sbryan/fed-project.git
 cd fed-project
 yarn install
 ```
