@@ -1,31 +1,7 @@
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import useSWR from 'swr'
-import { useEffect, useState } from 'react'
-
-const API_BASE = 'https://jsonplaceholder.typicode.com';
-const fetcher = (path) => fetch(`${API_BASE}${path}`)
-  .then(res => {
-    if (!res.ok) {
-      const message = res.json();
-      throw new Error(`${res.status}: ${message}`);
-    }
-    return res.json();
-  })
-  .catch(err => {
-    throw new Error(err)
-  });
-
-const usePosts = () => {
-  const { data, error, mutate } = useSWR(`/posts`, fetcher)
-
-  return {
-    posts:    data || [],
-    setPosts: mutate,
-    loading:  (!error && !data),
-    error
-  }
-}
+import { usePosts } from '../lib/dataRetriever'
 
 const Loading = () => (
   <h3 className={styles.description}>Fetching data...</h3>
