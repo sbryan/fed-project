@@ -1,5 +1,10 @@
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import IconButton from '@material-ui/core/IconButton'
+import SearchIcon from '@material-ui/icons/Search'
 import { useEffect, useState } from 'react'
 import { usePosts, useAuthors } from '../lib/dataRetriever'
 
@@ -42,7 +47,7 @@ export default function Home() {
     async function dispatchFilter(v) {
       await setFilter(v)
     }
-    const val = e.currentTarget.previousElementSibling.value
+    const val = e.currentTarget.offsetParent.querySelector('#filter').value || null
     if (val !== filter) {
       dispatchFilter(val)
       dispatchFilterChanged(true)
@@ -54,8 +59,19 @@ export default function Home() {
       <main className={styles.main}>
         <h1>FED Blog</h1>
         <div>
-          <input type='text' id='filter'></input>
-          <button onClick={handleFilterChange}>Filter by Author🔍</button>
+          <TextField id="filter" label="Filter by Author" type="search" variant="outlined"
+            InputProps={{
+              endAdornment:
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="filter results by author"
+                    onClick={handleFilterChange}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>,
+            }}
+          />
         </div>
         <hr />
         {postsLoading && <Loading/>}
