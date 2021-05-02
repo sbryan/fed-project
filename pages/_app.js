@@ -54,7 +54,7 @@ export default function MyApp({ Component, pageProps }) {
         </Toolbar>
       </AppBar>
       <CssBaseline />
-      <Container maxWidth="sm">
+      <Container maxWidth="lg">
         <Component {...pageProps} />
       </Container>
     </>

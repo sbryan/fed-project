@@ -4,6 +4,10 @@ import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from '@material-ui/core/IconButton'
 import SearchIcon from '@material-ui/icons/Search'
+import Grid from '@material-ui/core/Grid'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
 import { useEffect, useState } from 'react'
 import { usePosts, useAuthors } from '../lib/dataRetriever'
 
@@ -12,11 +16,18 @@ const Loading = () => (
 )
 
 const renderPostListItem = (post) => (
-  <li key={post.id}>
-    <Link href={`/post/${post.id}`}>
-      <a>{post.title}</a>
-    </Link>
-  </li>
+  <Grid item key={post.id} xs={12} sm={12} md={6} lg={4}>
+    <Card>
+      <CardContent>
+        <a>{post.title}</a>
+      </CardContent>
+      <CardActions>
+        <Link href={`/post/${post.id}`}>
+          <a>Read more...</a>
+        </Link>
+      </CardActions>
+    </Card>
+  </Grid>
 )
 
 export default function Home() {
@@ -27,15 +38,19 @@ export default function Home() {
   const { authors, setAuthors, authorsLoading, authorsError } = useAuthors();
 
   useEffect(() => {
-    if (filter && filterChanged) {
-      const author = authors.find(a => a.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
-      if (author) {
-        const res = posts.filter(p => p.userId === author.id)
-        setFilteredPosts(res)
+    if (filterChanged) {
+      if (filter) {
+        const author = authors.find(a => a.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
+        if (author) {
+          const res = posts.filter(p => p.userId === author.id)
+          setFilteredPosts(res)
+        } else {
+          setFilteredPosts(posts)
+        }
+        setFilterChanged(false)
       } else {
         setFilteredPosts(posts)
       }
-      setFilterChanged(false)
     }
   })
 
@@ -46,7 +61,7 @@ export default function Home() {
     async function dispatchFilter(v) {
       await setFilter(v)
     }
-    const val = e.currentTarget.offsetParent.querySelector('#filter').value || null
+    const val = e.currentTarget.offsetParent.querySelector('#filter').value || ''
     if (val !== filter) {
       dispatchFilter(val)
       dispatchFilterChanged(true)
@@ -73,15 +88,11 @@ export default function Home() {
         </div>
         <hr />
         {postsLoading && <Loading/>}
-        {filteredPosts && filteredPosts.length &&
-          <ol>
-            {filteredPosts.map(p => renderPostListItem(p))}
-          </ol>
-        || posts && posts.length &&
-          <ol>
-            {posts.map(p => renderPostListItem(p))}
-          </ol>
-        }
+        <Grid container spacing={3}>
+          {filteredPosts && filteredPosts.map(p => renderPostListItem(p))
+          || posts && posts.map(p => renderPostListItem(p))
+          }
+        </Grid>
       </main>
 
       <footer className={styles.footer}>
