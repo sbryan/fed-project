@@ -1,5 +1,6 @@
 // import Dynamic from 'next/dynamic'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { usePosts, useComments, useAuthors } from '../../lib/dataRetriever'
@@ -49,7 +50,9 @@ const BlogPage = () => {
       <h3>{post.title}</h3>
       <div>{post.body}</div>
       {author &&
-        <a><cite>{author.name}</cite></a>
+        <Link href={`/author/${author.id}`}>
+          <a><cite>{author.name}</cite></a>
+        </Link>
       }
       <hr />
       <h3>Comments:</h3>
