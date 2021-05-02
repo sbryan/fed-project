@@ -1,47 +1,55 @@
 import styles from '../styles/Home.module.css'
+import Link from 'next/link'
+import useSWR from 'swr'
+import { useEffect, useState } from 'react'
+
+const API_BASE = 'https://jsonplaceholder.typicode.com';
+const fetcher = (path) => fetch(`${API_BASE}${path}`)
+  .then(res => {
+    if (!res.ok) {
+      const message = res.json();
+      throw new Error(`${res.status}: ${message}`);
+    }
+    return res.json();
+  })
+  .catch(err => {
+    throw new Error(err)
+  });
+
+const usePosts = () => {
+  const { data, error, mutate } = useSWR(`/posts`, fetcher)
+
+  return {
+    posts:    data || [],
+    setPosts: mutate,
+    loading:  (!error && !data),
+    error
+  }
+}
+
+const Loading = () => (
+  <h3 className={styles.description}>Fetching data...</h3>
+)
+
+const renderPostListItem = (post) => (
+  <li key={post.id}>
+    <Link href={`/post/${post.id}`}>
+      <a>{post.title}</a>
+    </Link>
+  </li>
+)
 
 export default function Home() {
+  const { posts, setPosts, loading, error } = usePosts();
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        {loading && <Loading/>}
+        {posts && posts.length &&
+          <ol>
+            {posts.map(p => renderPostListItem(p))}
+          </ol>}
       </main>
 
       <footer className={styles.footer}>
