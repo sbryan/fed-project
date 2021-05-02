@@ -1,6 +1,5 @@
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
-import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from '@material-ui/core/IconButton'
@@ -57,7 +56,6 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <h1>FED Blog</h1>
         <div>
           <TextField id="filter" label="Filter by Author" type="search" variant="outlined"
             InputProps={{

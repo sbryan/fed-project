@@ -1,5 +1,13 @@
 import Head from 'next/head'
-import '../styles/globals.css'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import MenuIcon from '@material-ui/icons/Menu'
+
+import Container from '@material-ui/core/Container'
 
 export default function MyApp({ Component, pageProps }) {
   return (
@@ -35,7 +43,20 @@ export default function MyApp({ Component, pageProps }) {
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
         <meta name="theme-color" content="#317EFB" />
       </Head>
-      <Component {...pageProps} />
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6">
+            FED Project Blog
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <CssBaseline />
+      <Container maxWidth="sm">
+        <Component {...pageProps} />
+      </Container>
     </>
   )
 }
