@@ -1,21 +1,27 @@
-# Progressive Web App Example
+# FED Project
 
-This example uses [`next-pwa`](https://github.com/shadowwalker/next-pwa) to create a progressive web app (PWA) powered by [Workbox](https://developers.google.com/web/tools/workbox/).
+This Progressive Web App (PWA) project was created using the [`progressive-web-app`](https://github.com/vercel/next.js/tree/master/examples/progressive-web-app) example/template, as shown below.
 
-## Deploy your own
+    npx create-next-app fed-project -e https://github.com/vercel/next.js/tree/master/examples/progressive-web-app
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/progressive-web-app&project-name=progressive-web-app&repository-name=progressive-web-app)
+It makes use of the [`next-pwa`](https://github.com/shadowwalker/next-pwa) module and Googles' [Workbox](https://developers.google.com/web/tools/workbox/) toolkit for generating service worker integrations
 
 ## How to use
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+Start by cloning the project locally:
+```bash
+git clone fed-project <url to this repo>
+cd fed-project
+yarn install
+```
+### Run the dev server locally
 
 ```bash
-npx create-next-app --example progressive-web-app progressive-web-app
-# or
-yarn create next-app --example progressive-web-app progressive-web-app
+yarn run
 ```
+### Build and run the static site
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+```bash
+yarn build
+yarn start
+```
