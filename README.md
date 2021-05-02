@@ -17,7 +17,7 @@ yarn install
 ### Run the dev server locally
 
 ```bash
-yarn run
+yarn dev
 ```
 ### Build and run the static site
 
