@@ -62,9 +62,10 @@ export default function Home() {
   useEffect(() => {
     if (filterChanged) {
       if (filter) {
-        const author = authors.find(a => a.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
-        if (author) {
-          const res = posts.filter(p => p.userId === author.id)
+        const matches = authors.filter(a => a.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
+          .map(a => a.id)
+        if (matches) {
+          const res = posts.filter(p => matches.includes(p.userId))
           setFilteredPosts(res)
         } else {
           setFilteredPosts(posts)
