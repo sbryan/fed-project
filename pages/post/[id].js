@@ -25,25 +25,22 @@ import { usePosts, useComments, useAuthors } from '../../lib/dataRetriever'
 const renderComment = (c) => {
   const avatar = `https://avatars.dicebear.com/api/gridy/${c.email}.svg`
   return (
-    <>
-      <Divider variant="inset" component="li" />
-      <ListItem key={c.id}>
-        <ListItemAvatar>
-          <Avatar alt={c.email} src={avatar} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={
-            <div>
-              <Typography component='span' variant='subtitle1'>{c.name}</Typography>
-              <Typography component='span' variant='body2'>
-                <cite> - <a href={`mailto:${c.email}`}>{c.email}</a></cite>
-              </Typography>
-            </div>
-            }
-          secondary={c.body}
-        />
-      </ListItem>
-    </>
+    <ListItem key={c.id}>
+      <ListItemAvatar>
+        <Avatar alt={c.email} src={avatar} />
+      </ListItemAvatar>
+      <ListItemText
+        primary={
+          <div>
+            <Typography component='span' variant='subtitle1'>{c.name}</Typography>
+            <Typography component='span' variant='body2'>
+              <cite> - <a href={`mailto:${c.email}`}>{c.email}</a></cite>
+            </Typography>
+          </div>
+          }
+        secondary={c.body}
+      />
+    </ListItem>
   )
 }
 
