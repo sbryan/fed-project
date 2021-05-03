@@ -8,12 +8,9 @@ import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { useEffect, useState } from 'react'
 import { usePosts, useAuthors } from '../lib/dataRetriever'
-
-const Loading = () => (
-  <h3 className={styles.description}>Fetching data...</h3>
-)
 
 const renderPostListItem = (post) => (
   <Grid item key={post.id} xs={12} sm={12} md={6} lg={4}>
@@ -87,7 +84,7 @@ export default function Home() {
           />
         </div>
         <hr />
-        {postsLoading && <Loading/>}
+        {postsLoading && <CircularProgress />}
         <Grid container spacing={3}>
           {filteredPosts && filteredPosts.map(p => renderPostListItem(p))
           || posts && posts.map(p => renderPostListItem(p))
