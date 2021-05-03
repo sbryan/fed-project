@@ -1,6 +1,21 @@
 // import Dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
+import styles from '../../styles/Home.module.css'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import IconButton from '@material-ui/core/IconButton'
+import CancelIcon from '@material-ui/icons/Cancel'
+import Avatar from '@material-ui/core/Avatar'
+import Divider from '@material-ui/core/Divider'
+import List from '@material-ui/core/List'
+import ListSubheader from '@material-ui/core/ListSubheader'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
 import { useRouter } from 'next/router'
 
 import { usePosts, useComments, useAuthors } from '../../lib/dataRetriever'
@@ -8,16 +23,27 @@ import { usePosts, useComments, useAuthors } from '../../lib/dataRetriever'
 // const EditPostForm = Dynamic(import('../../components/edit-post'), { ssr: false })
 
 const renderComment = (c) => {
+  const avatar = `https://avatars.dicebear.com/api/gridy/${c.email}.svg`
   return (
-    <li key={c.id}>
-      <div className="commentHeader">
-        <span>{c.name}</span>
-        <address><a href={`mailto:${c.email}`}>{c.email}</a></address>
-      </div>
-      <div>
-        {c.body}
-      </div>
-    </li>
+    <>
+      <Divider variant="inset" component="li" />
+      <ListItem key={c.id}>
+        <ListItemAvatar>
+          <Avatar alt={c.email} src={avatar} />
+        </ListItemAvatar>
+        <ListItemText
+          primary={
+            <div>
+              <Typography component='span' variant='subtitle1'>{c.name}</Typography>
+              <Typography component='span' variant='body2'>
+                <cite> - <a href={`mailto:${c.email}`}>{c.email}</a></cite>
+              </Typography>
+            </div>
+            }
+          secondary={c.body}
+        />
+      </ListItem>
+    </>
   )
 }
 
@@ -30,7 +56,7 @@ const BlogPage = () => {
   const post = posts.find(p => p.id.toString() === id.toString()) || null
   const author = authors.find(a => post && post.userId.toString() === a.id.toString()) || null
   const postComments = comments.filter(c => id && id.toString() === c.postId.toString()) || []
-  const bgURL = pics && pics[id] && pics[id].download_url || null
+  const avatar = author && `https://avatars.dicebear.com/api/gridy/${author.username}.svg` || ''
 
   if (!id || !post) {
     return (
@@ -42,27 +68,57 @@ const BlogPage = () => {
       </>
     )
   }
+
   return (
     <>
       <Head>
         <title>{post.title}</title>
       </Head>
-      <hr />
-      <h3>{post.title}</h3>
-      <div>{post.body}</div>
-      {author &&
-        <Link href={`/author/${author.id}`}>
-          <a><cite>{author.name}</cite></a>
-        </Link>
-      }
-      <hr />
-      <h3>Comments:</h3>
-        {commentsLoading && <div>Loading comments...</div>}
-        {postComments && 
-          <ol>
-            {postComments.map(c => renderComment(c))}
-          </ol>
-        }
+      <div className={styles.container}>
+        <main className={styles.main}>
+          <Card>
+            <CardHeader
+              avatar={
+                <Avatar aria-label='Author'
+                  alt={author.name}
+                  src={avatar}>
+                </Avatar>
+              }
+              action={
+                <IconButton aria-label="close"
+                  onClick={()=>window.history.back()}>
+                  <CancelIcon />
+                </IconButton>
+              }
+              title={post.title}
+              subheader={
+                <Typography component='span' variant='body2'>
+                  <cite>by&nbsp;
+                    <Link href={`/author/${author.id}`}>
+                      <a>{author.name}</a>
+                    </Link>
+                  </cite>
+                </Typography>
+              }
+            />
+            <CardContent>
+              {post.body}
+            </CardContent>
+            <CardActions>
+              <List
+                component="nav"
+                subheader={
+                  <ListSubheader component="div" variant='h6'>
+                    {commentsLoading && 'Loading comments...' ||
+                    `Comments (${postComments.length})`}
+                  </ListSubheader>
+                }>
+                {postComments.map(c=>renderComment(c))}
+              </List>
+            </CardActions>
+          </Card>
+        </main>
+      </div>
     </>
   )
 }
