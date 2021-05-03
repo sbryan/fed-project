@@ -30,6 +30,7 @@ const BlogPage = () => {
   const post = posts.find(p => p.id.toString() === id.toString()) || null
   const author = authors.find(a => post && post.userId.toString() === a.id.toString()) || null
   const postComments = comments.filter(c => id && id.toString() === c.postId.toString()) || []
+  const bgURL = pics && pics[id] && pics[id].download_url || null
 
   if (!id || !post) {
     return (
